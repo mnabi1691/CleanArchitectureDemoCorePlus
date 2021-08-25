@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: microsoft/mssql-server-linux:2017-CU5
+    environment:
+      - SA_PASSWORD=admiN!123
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+  coreplus.report.api:
+    image: ${DOCKER_REGISTRY-}coreplusreportapi
+    build:
+      context: .
+      dockerfile: CorePlusReportService/Dockerfile
+    ports:
+      - "5055:443"
+      - "5056:80"
+    depends_on:
+      - sqlserver
