@@ -1,0 +1,31 @@
+services:
+  coreplus.report.api:
+    build:
+      context: C:\Working Folder\RemoteOffice\Project_Practicle_Excercise_Mahfuz\CorePlusReportService
+      dockerfile: CorePlusReportService/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: coreplusreportapi
+    ports:
+    - published: 5056
+      target: 80
+    - target: 80
+    - published: 5055
+      target: 443
+    - target: 443
+    volumes:
+    - C:\Users\hp\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\hp\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  sqlserver:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: admiN!123
+    image: microsoft/mssql-server-linux:2017-CU5
+    ports:
+    - published: 5434
+      target: 1433
+version: '3.4'
